@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="algorithmAssigment">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/algorithmAssigment.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
