@@ -1,17 +1,12 @@
 package dao;
-import java.util.*;
-import java.io.IOException;
 
-public interface IDAO <K, V> {
-    String save();
+import java.util.List;
 
-    String name();
-
-    String getById();
-
+public interface IDAO<K, V> {
     void save(V entity);
     V find(K id);
     void delete(V entity);
     List<V> findAll();
+    void saveAll();
+    void loadAll();
 }
-

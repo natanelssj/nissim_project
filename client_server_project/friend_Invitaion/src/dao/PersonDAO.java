@@ -1,73 +1,18 @@
-/*package dao;
-
-import dm.Person;
-import main.java.AlgorithmSearch;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-public class PersonDAO implements IDAO.IDao<Integer, Person> {
-    private Map<Integer, Person> personStorage = new HashMap<>();
-
-
-    @Override
-    public void delete(Person entity) {
-
-        personStorage.remove(entity.getId());
-        System.out.println("Person with ID " + entity.getId() + " deleted.");
-    }
-
-    @Override
-    public Person find(Integer id) throws IllegalArgumentException, IOException {
-        if (id == null) {
-            throw new IllegalArgumentException("ID cannot be null.");
-        }
-        return personStorage.get(id);
-    }
-
-    @Override
-    public boolean save(Person entity) throws IllegalArgumentException {
-        if (entity == null || entity.getId() == null) {
-            throw new IllegalArgumentException("Entity or ID cannot be null.");
-        }
-        personStorage.put(entity.getId(), entity);
-        System.out.println("Person with ID " + entity.getId() + " saved.");
-        return true;
-    }
-}
-*/
-
-
-
 package dao;
 
 import dm.Person;
 
+import java.io.*;
 import java.util.*;
 
 public class PersonDAO implements IDAO<Integer, Person> {
     private final Map<Integer, Person> personStorage = new HashMap<>();
-    private final Map<Integer, List<Integer>> connections = new HashMap<>();
-
-    @Override
-    public String save() {
-        return "";
-    }
-
-    @Override
-    public String name() {
-        return "";
-    }
-
-    @Override
-    public String getById() {
-        return "";
-    }
+    private final String filePath = "persons.txt";
 
     @Override
     public void save(Person entity) {
         personStorage.put(entity.getId(), entity);
+        saveAll();
     }
 
     @Override
@@ -78,6 +23,7 @@ public class PersonDAO implements IDAO<Integer, Person> {
     @Override
     public void delete(Person entity) {
         personStorage.remove(entity.getId());
+        saveAll();
     }
 
     @Override
@@ -85,12 +31,38 @@ public class PersonDAO implements IDAO<Integer, Person> {
         return new ArrayList<>(personStorage.values());
     }
 
-    public void addConnection(int person1, int person2) {
-        connections.computeIfAbsent(person1, k -> new ArrayList<>()).add(person2);
-        connections.computeIfAbsent(person2, k -> new ArrayList<>()).add(person1);
+    @Override
+    public void saveAll() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (Person person : personStorage.values()) {
+                writer.write(person.getId() + "," + person.getName());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to save persons: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void loadAll() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            personStorage.clear();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                int id = Integer.parseInt(parts[0]);
+                String name = parts[1];
+                personStorage.put(id, new Person(id, name));
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to load persons: " + e.getMessage());
+        }
+    }
+
+    public void addConnection(int i, int i1) {
     }
 
     public Map<Integer, List<Integer>> getConnectionsGraph() {
-        return connections;
+        return null;
     }
 }

@@ -1,17 +1,18 @@
 
 
+import Service.InvitationService;
 import dao.PersonDAO;
 import dm.Person;
-import Service.InvitationService;
 import main.java.AlgorithmSearch;
-import startegy.BFSSender;
-import startegy.DFSSender;
 import main.java.BFS;
 import main.java.DFS;
+import server.Server;
+import startegy.BFSSender;
+import startegy.DFSSender;
 
 public class Main {
     public static void main(String[] args) {
-        PersonDAO personDao = new PersonDAO();
+         PersonDAO personDao = new PersonDAO();
         personDao.addConnection(1, 2);
         personDao.addConnection(1, 3);
         personDao.addConnection(2, 4);
@@ -32,5 +33,10 @@ public class Main {
         // DFS
         invitationService.setStrategy(new DFSSender(personDao, new DFS()));
         System.out.println("DFS: " + invitationService.sendInvitations(1, 2));
+
+
+
+        Server server=new Server();
+        server.tryserver();
     }
 }

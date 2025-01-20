@@ -4,47 +4,36 @@ import dm.Group;
 
 import java.util.*;
 
-public class MembersDao implements IDAO {
-
-    private GroupDao groupDAO = new GroupDao(); // To interact with Group entities
+public class MembersDao implements IDAO<Integer, Group> {
+    private final GroupDao groupDao = new GroupDao();
 
     @Override
-    public String save() {
-        // Take group as input, save it to the file
-        // This could be replaced with actual file-saving logic
-        return "Group saved successfully";
+    public void save(Group entity) {
+        groupDao.save(entity);
     }
 
     @Override
-    public String name() {
-        return "MembersDao";
+    public Group find(Integer id) {
+        return groupDao.find(id);
     }
 
     @Override
-    public String getById() {
-        // Get group from file by id
-        // This is a placeholder and should be replaced with actual logic
-        return "Group retrieved by ID";
+    public void delete(Group entity) {
+        groupDao.delete(entity);
     }
 
     @Override
-    public void save(Object entity) {
-
+    public List<Group> findAll() {
+        return groupDao.findAll();
     }
 
     @Override
-    public Object find(Object id) {
-        return null;
+    public void saveAll() {
+        groupDao.saveAll();
     }
 
     @Override
-    public void delete(Object entity) {
-
+    public void loadAll() {
+        groupDao.loadAll();
     }
-
-    @Override
-    public List findAll() {
-        return List.of();
-    }
-
 }
